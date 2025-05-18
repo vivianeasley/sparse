@@ -13,9 +13,9 @@ of the state object.
 - Includes `mapList()` for cleanly rendering array-based lists.
 
 ## Limitations:
- * - Not optimized for performance; re-renders the entire DOM on state change.
- * - Intended for static apps with no backend, auth, or sensitive data.
- * - Relies on inline event handlers (e.g. `onclick="..."`).
+- Not optimized for performance; re-renders the entire DOM on state change.
+- Intended for static apps with no backend, auth, or sensitive data.
+- Relies on inline event handlers (e.g. `onclick="..."`).
 
 ## Example Usage
 ```JavaScript
