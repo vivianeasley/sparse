@@ -1,5 +1,5 @@
 # Sparse
-A minimal component-based frontend UI library (~400 bytes)
+A minimal component-based frontend UI library (~250 bytes)
 
 Renders a full DOM tree using template literals and tracks state updates
 via a JavaScript Proxy. Designed for personal use in small, simple applications like games,
