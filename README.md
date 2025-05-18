@@ -2,14 +2,13 @@
 A minimal component-based frontend UI library (~400 bytes)
 
 Renders a full DOM tree using template literals and tracks state updates
-via a JavaScript Proxy. Designed for small, simple applications like games,
+via a JavaScript Proxy. Designed for personal use in small, simple applications like games,
 demos, or hackathon projects. Full re-renders are triggered on any mutation
 of the state object.
 
 ## Core Features:
 - Uses `html` template tag to build DOM content as strings.
 - Supports simple, global state management with automatic re-rendering.
-- Includes `bindInput()` for easy two-way binding of text inputs.
 - Includes `mapList()` for cleanly rendering array-based lists.
 
 ## Limitations:
@@ -19,54 +18,54 @@ of the state object.
 
 ## Example Usage
 ```JavaScript
-    import { sparse } from './sparse.js'
+import { sparse } from './sparse.js'
 
-    // --- Child Component (simple greeting) ---
-    const Greeting = (name) => html`<p>Hello, <strong>${name}</strong>!</p>`
+const Greeting = (state) => html`
+  <p>Hello, <strong>${state.name || 'stranger'}</strong>!</p>
+`
 
-    // --- Child Component used in a list ---
-    const TodoItem = (text, i) => html`
-      <li>
-        ${text}
-        <button onclick="removeTodo(${i})">❌</button>
-      </li>
-    `
+const TodoItem = (todo, i) => html`
+  <li>
+    ${todo}
+    <button onclick="methods.removeElement(${i})">❌</button>
+  </li>
+`
 
-    // --- App initialization ---
-    const { state, html, bindInput, mapList } = sparse(
-      document.getElementById('app'),
-      (state) => html`
-        <div>
-          <h1>🎮 Sparse Demo</h1>
+const appEl = document.getElementById('app')
 
-          <!-- Greeting component -->
-          ${Greeting(state.name)}
+const state = sparse(appEl, (state) => html`
+  <div>
+    <h1>Sparse Greeting Component Test</h1>
+    ${Greeting(state)}
 
-          <!-- Input bound to state -->
-          <input ${bindInput('name')} placeholder="Your name">
+    <h2>Element Test</h2>
+    <button onclick="methods.addElement()">Add</button>
 
-          <h2>📝 Todo List</h2>
+    <ul>
+      ${mapList(state.todos, (todo, i) => TodoItem(todo, i))}
+    </ul>
+  </div>
+`, {
+  name: 'test',
+  newTodo: 'hi',
+  todos: ['this', 'is', 'a', 'test']
+})
 
-          <!-- Add todo -->
-          <input ${bindInput('newTodo')} placeholder="New task">
-          <button onclick="addTodo()">Add</button>
+const addElement = () => {
+  if (state.newTodo.trim()) {
+    state.todos.push(state.newTodo.trim()) // Doesn't trigger re-render
+    const options = ['this', 'is', 'a', 'test']
+    state.todos = [...state.todos] // Triggers re-render
+    state.newTodo = options[Math.floor(Math.random() * options.length)]
+  }
+}
 
-          <!-- List of todo components -->
-          <ul>
-            ${mapList(state.todos, (todo, i) => TodoItem(todo, i))}
-          </ul>
-        </div>
-      `,
-      { name: '', newTodo: '', todos: [] }
-    )
+const removeElement = (i) => {
+  state.todos = state.todos.filter((_, idx) => idx !== i)
+}
 
-    // --- Handlers ---
-    window.addTodo = () => {
-      if (state.newTodo.trim()) {
-        state.todos.push(state.newTodo.trim())
-        state.newTodo = ''
-      }
-    }
-
-    window.removeTodo = (i) => state.todos.splice(i, 1)
+window.methods = {
+  addElement,
+  removeElement
+}
 ```
