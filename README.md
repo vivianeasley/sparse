@@ -1,8 +1,23 @@
-# sparse
-A minimal component based frontend framework for simple use cases in 400bytes.
+# Sparse
+A minimal component-based frontend UI library (~400 bytes)
 
-# Example Usage
+Renders a full DOM tree using template literals and tracks state updates
+via a JavaScript Proxy. Designed for small, simple applications like games,
+demos, or hackathon projects. Full re-renders are triggered on any mutation
+of the state object.
 
+## Core Features:
+- Uses `html` template tag to build DOM content as strings.
+- Supports simple, global state management with automatic re-rendering.
+- Includes `bindInput()` for easy two-way binding of text inputs.
+- Includes `mapList()` for cleanly rendering array-based lists.
+
+## Limitations:
+ * - Not optimized for performance; re-renders the entire DOM on state change.
+ * - Intended for static apps with no backend, auth, or sensitive data.
+ * - Relies on inline event handlers (e.g. `onclick="..."`).
+
+## Example Usage
 ```JavaScript
     import { sparse } from './sparse.js'
 
