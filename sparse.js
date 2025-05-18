@@ -1,9 +1,9 @@
 /** Template tag for HTML string building */
-const html = (strings, ...values) =>
+export const html = (strings, ...values) =>
   strings.reduce((out, str, i) => out + str + (values[i] ?? ''), '')
 
 /** Utility to map over arrays and return joined HTML strings */
-const mapList = (arr, render) => arr.map(render).join('')
+export const mapList = (arr, render) => arr.map(render).join('')
 
 /**
  * Initializes the app and rerenders when state changes.
@@ -12,7 +12,7 @@ const mapList = (arr, render) => arr.map(render).join('')
  * @param {Object} initialState - Initial reactive state object
  * @returns {Object} Reactive state
  */
-function tinyview(rootEl, viewFn, initialState) {
+export function sparse(rootEl, viewFn, initialState) {
   let prevState = null
 
   const state = new Proxy(initialState, {
